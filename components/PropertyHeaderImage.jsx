@@ -5,7 +5,7 @@ const PropertyHeaderImage = ({ image }) => {
   return (
     <div>
       <Image
-        src={`/properties/${image}`}
+        src={image}
         alt="Property Image"
         width={0}
         height={0}
