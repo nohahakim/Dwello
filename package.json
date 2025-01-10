@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
+    "cloudinary": "^2.5.1",
     "mongoose": "^8.9.3",
     "next": "15.1.3",
     "next-auth": "^4.24.11",
