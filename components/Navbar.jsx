@@ -16,7 +16,6 @@ const Navbar = () => {
 
   const pathname = usePathname();
   const { data: session } = useSession();
-  console.log(session);
   const profileImage = session?.user?.image;
 
   useEffect(() => {

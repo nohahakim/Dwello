@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 
 const PropertySchema = new Schema(
   {
-    Owner: {
+    owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true,
