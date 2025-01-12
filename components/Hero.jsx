@@ -1,3 +1,5 @@
+import PropertySearchForm from "./PropertySearchForm";
+
 const Hero = () => {
   return (
     <section className="bg-blue-700 py-20 mb-4">
@@ -21,10 +23,8 @@ const Hero = () => {
           >
             We have the best properties for you. Check them out now!
           </p>
-          <button className="bg-white text-blue-700 py-2 px-4 rounded-lg">
-            View Properties
-          </button>
         </div>
+        <PropertySearchForm />
       </div>
     </section>
   );
