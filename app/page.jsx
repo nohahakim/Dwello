@@ -2,6 +2,7 @@ import Hero from "@/components/Hero";
 
 import InfoBoxes from "@/components/InfoBoxes";
 import HomeProperties from "@/components/HomeProperties";
+import FeaturedProperties from "@/components/FeaturedProperties";
 
 // Home page component
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
     <>
       <Hero />
       <InfoBoxes />
+      <FeaturedProperties />
       <HomeProperties />
     </>
   );
