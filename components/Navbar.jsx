@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import logo from "@/assets/images/logo-white.png";
 import profileDefault from "@/assets/images/profile.png";
-import { FaGoogle } from "react-icons/fa";
+import { FaGoogle, FaBars, FaBell } from "react-icons/fa";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import UnreadMessageCount from "./UnreadMessageCount";
 import { get, set } from "mongoose";
@@ -29,63 +29,53 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-blue-700 border-b border-blue-500">
-      <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <nav className="bg-gradient-to-r from-cyan-600 to-blue-600 sticky top-0 z-50 shadow">
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-20 items-center justify-between">
+          {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center md:hidden">
-            {/* <!-- Mobile menu button--> */}
             <button
               type="button"
               id="mobile-dropdown-button"
-              className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+              className="inline-flex items-center justify-center p-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
               aria-controls="mobile-menu"
               aria-expanded="false"
               onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             >
-              <span className="absolute -inset-0.5"></span>
               <span className="sr-only">Open main menu</span>
-              <svg
-                className="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
+              <FaBars className="text-xl" />
             </button>
           </div>
 
+          {/* Logo and desktop menu */}
           <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
-            {/* <!-- Logo --> */}
-            <Link className="flex flex-shrink-0 items-center" href="/">
+            <Link className="flex items-center flex-shrink-0" href="/">
               <Image className="h-10 w-auto" src={logo} alt="PropertyPulse" />
-
-              <span className="hidden md:block text-white text-2xl font-bold ml-2">
+              <span className="ml-2 hidden md:inline-block text-white text-2xl font-bold tracking-wide">
                 Dwello
               </span>
             </Link>
-            {/* <!-- Desktop Menu Hidden below md screens --> */}
-            <div className="hidden md:ml-6 md:block">
-              <div className="flex space-x-2">
+
+            {/* Desktop links */}
+            <div className="hidden md:block md:ml-10">
+              <div className="flex items-center space-x-6">
                 <Link
                   href="/"
                   className={`${
-                    pathname === "/" ? "bg-black" : ""
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    pathname === "/"
+                      ? "bg-white text-blue-600"
+                      : "text-white hover:bg-white hover:text-blue-600"
+                  } transition-colors px-3 py-2 rounded-md font-semibold`}
                 >
                   Home
                 </Link>
                 <Link
                   href="/properties"
                   className={`${
-                    pathname === "/properties" ? "bg-black" : ""
-                  } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                    pathname === "/properties"
+                      ? "bg-white text-blue-600"
+                      : "text-white hover:bg-white hover:text-blue-600"
+                  } transition-colors px-3 py-2 rounded-md font-semibold`}
                 >
                   Properties
                 </Link>
@@ -93,8 +83,10 @@ const Navbar = () => {
                   <Link
                     href="/properties/add"
                     className={`${
-                      pathname === "/properties/add" ? "bg-black" : ""
-                    } text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2`}
+                      pathname === "/properties/add"
+                        ? "bg-white text-blue-600"
+                        : "text-white hover:bg-white hover:text-blue-600"
+                    } transition-colors px-3 py-2 rounded-md font-semibold`}
                   >
                     Add Property
                   </Link>
@@ -103,7 +95,7 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* <!-- Right Side Menu (Logged Out) --> */}
+          {/* If not logged in (session is null): show login buttons */}
           {!session && (
             <div className="hidden md:block md:ml-6">
               <div className="flex items-center">
@@ -112,9 +104,9 @@ const Navbar = () => {
                     <button
                       key={provider.name}
                       onClick={() => signIn(provider.id)}
-                      className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2"
+                      className="flex items-center text-white bg-blue-700 hover:bg-blue-800 transition-colors px-4 py-2 rounded-md"
                     >
-                      <FaGoogle className="text-white mr-2" />
+                      <FaGoogle className="mr-2" />
                       <span>Login with {provider.name}</span>
                     </button>
                   ))}
@@ -122,49 +114,30 @@ const Navbar = () => {
             </div>
           )}
 
-          {/* <!-- Right Side Menu (Logged In) --> */}
+          {/* If logged in: show notifications and profile menu */}
           {session && (
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-              <Link href="/messages" className="relative group">
+              <Link href="/messages" className="relative group mr-4">
                 <button
                   type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                  className="rounded-full p-1 text-white hover:text-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                 >
-                  <span className="absolute -inset-1.5"></span>
                   <span className="sr-only">View notifications</span>
-                  <svg
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                    />
-                  </svg>
+                  <FaBell className="text-xl" />
                 </button>
-
                 <UnreadMessageCount />
               </Link>
-              {/* <!-- Profile dropdown button --> */}
               <div className="relative ml-3">
                 <div>
                   <button
                     type="button"
-                    className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    className="flex rounded-full focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2"
                     id="user-menu-button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
                     onClick={() => setIsProfileMenuOpen((prev) => !prev)}
                   >
-                    <span className="absolute -inset-1.5"></span>
                     <span className="sr-only">Open user menu</span>
                     <Image
-                      className="h-8 w-8 rounded-full"
+                      className="h-8 w-8 rounded-full border-2 border-white"
                       src={profileImage || profileDefault}
                       alt=""
                       width={40}
@@ -173,45 +146,27 @@ const Navbar = () => {
                   </button>
                 </div>
 
-                {/* <!-- Profile dropdown --> */}
                 {isProfileMenuOpen && (
                   <div
                     id="user-menu"
-                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabIndex="-1"
+                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5"
                   >
                     <Link
                       href="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-0"
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                      }}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Your Profile
                     </Link>
                     <Link
                       href="/properties/saved"
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-2"
-                      onClick={() => {
-                        setIsProfileMenuOpen(false);
-                      }}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => setIsProfileMenuOpen(false)}
                     >
                       Saved Properties
                     </Link>
                     <button
-                      className="block px-4 py-2 text-sm text-gray-700"
-                      role="menuitem"
-                      tabIndex="-1"
-                      id="user-menu-item-2"
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => {
                         setIsProfileMenuOpen(false);
                         signOut();
@@ -227,41 +182,49 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* <!-- Mobile menu, show/hide based on menu state. --> */}
+      {/* Mobile menu, shown only if isMobileMenuOpen is true */}
       {isMobileMenuOpen && (
-        <div id="mobile-menu">
-          <div className="space-y-1 px-2 pb-3 pt-2">
+        <div className="md:hidden" id="mobile-menu">
+          <div className="space-y-1 px-4 py-4bg-gradient-to-r from-cyan-600 to-blue-600">
             <Link
               href="/"
-              className={`${
-                pathname === "/" ? "bg-black" : ""
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              className={`block ${
+                pathname === "/" ? "bg-blue-600" : ""
+              } text-white hover:bg-blue-600 px-3 py-2 rounded-md font-semibold`}
             >
               Home
             </Link>
             <Link
               href="/properties"
-              className={`${
-                pathname === "/properties" ? "bg-black" : ""
-              } text-white block rounded-md px-3 py-2 text-base font-medium`}
+              className={`block ${
+                pathname === "/properties" ? "bg-blue-600" : ""
+              } text-white hover:bg-blue-600 px-3 py-2 rounded-md font-semibold`}
             >
               Properties
             </Link>
             {session && (
               <Link
                 href="/properties/add"
-                className={`${
-                  pathname === "/properties/add" ? "bg-black" : ""
-                } text-white block rounded-md px-3 py-2 text-base font-medium`}
+                className={`block ${
+                  pathname === "/properties/add" ? "bg-blue-600" : ""
+                } text-white hover:bg-blue-600 px-3 py-2 rounded-md font-semibold`}
               >
                 Add Property
               </Link>
             )}
-            {!session && (
-              <button className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-4">
-                <i className="fa-brands fa-google mr-2"></i>
-                <span>Login or Register</span>
-              </button>
+            {!session && providers && (
+              <div className="mt-3">
+                {Object.values(providers).map((provider) => (
+                  <button
+                    key={provider.name}
+                    onClick={() => signIn(provider.id)}
+                    className="flex items-center text-white bg-blue-800 hover:bg-blue-900 px-3 py-2 rounded-md w-full"
+                  >
+                    <FaGoogle className="mr-2" />
+                    <span>Login with {provider.name}</span>
+                  </button>
+                ))}
+              </div>
             )}
           </div>
         </div>
