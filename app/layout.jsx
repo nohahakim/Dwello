@@ -17,7 +17,7 @@ const MainLayout = ({ children }) => {
   return (
     <AuthProvider>
       <GlobalProvider>
-        <html>
+        <html suppressHydrationWarning>
           <body className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
             <Navbar />
             <main>{children}</main>
